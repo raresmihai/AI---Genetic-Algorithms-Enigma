@@ -84,5 +84,39 @@ def solve():
     individuals = generate_individuals()
     ordered_individuals = order_by_fitness(individuals,cryptotext,dictionary)
 
+
+
+
+
+
+
+
+
+def scor_turnir(individual, criptotext, dictionar):
+    fitness_weight  = 0.7
+    random_bonus_weight = 0.3
+    random_bonus = random.random()
+    scor = individual[1] * fitness_weight + random_bonus * random_bonus_weight
+    return scor
+
+def castigator(individual_1, individual_2):
+    if scor_turnir(individual_1) > scor_turnir(individual_2):
+        return individual_1
+    else:
+        return individual_2
+
+def fight_turnir(individuals_1, individuals_2):
+    if len(individuals_1) == 1 and len(individuals_2) == 1:
+        return castigator(individuals_1, individuals_2)
+    else:
+        return fight_turnir(fight_turnir(individuals_1[0:len(individuals_1)/2-1], individuals_1[len(individuals_1)/2:]),
+                            fight_turnir(individuals_2[0:len(individuals_2)/2-1], individuals_2[len(individuals_2)/2:]))
+def turnir(individuals):
+    random.shuffle(individuals)
+    n = random.choice([2, 4, 8, 16, 32, 64])
+    top_n_individuals = individuals[0:n-1]
+    castigator = fight_turnir(top_n_individuals[0:n/2-1], top_n_individuals[n/2, n-1])
+    return castigator
+
 #solve()
-print (encryption())
+#print (scor_turnir("","",""))
