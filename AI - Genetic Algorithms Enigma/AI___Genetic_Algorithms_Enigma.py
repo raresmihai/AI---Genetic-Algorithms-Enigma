@@ -191,9 +191,10 @@ def turnir(individuals):
 
 
 def get_winners_from_turnir(individuals):
+    individuals_copy = list(individuals)
     turnir_winners = []
     for i in range(0, 30):
-        turnir_winner = turnir(individuals)
+        turnir_winner = turnir(individuals_copy)
         turnir_winners.append(turnir_winner[0][0])
     return turnir_winners
 
@@ -222,7 +223,7 @@ def find_cypher():
         roulette_winners = get_winners_from_roulette(individuals)
         childs.extend(get_childs_from_mutations(turnir_winners))
         childs.extend(get_childs_from_cross_over(roulette_winners))
-        if childs[0][0] == last_best_individual:
+        if childs[0] == last_best_individual:
             unchanged += 1
         else:
             last_best_individual = childs[0]
