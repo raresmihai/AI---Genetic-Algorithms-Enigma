@@ -94,14 +94,36 @@ def spin_roulette(individuals,roulette):
     random_individual_index = random.randint(0,99)
     return individuals[roulette[random_individual_index]]
 
+def cross_over(individual1,individual2):
+    split_index = random.randint(1,24)
+    child1 = individual1[0:split_index]
+    child1.extend(individual2[split_index:25])
+    child2 = individual2[0:split_index]
+    child2.extend(individual1[split_index:25])
+    #childs = solve_conflicts(child1,child2)
+    return (child1,child2)
+
+def mutation(individual):
+    index1 = random.randint(0,25)
+    index2 = random.randint(0,25)
+    letter1 = individual[index1]
+    letter2 = individual[index2]
+    individual[index1] = letter2
+    individual[index2] = letter1
+    return individual
+
 def solve():
     cryptotext = encryption()
     dictionary = build_dictionary()
     individuals = generate_individuals()
     ordered_individuals = order_by_fitness(individuals,cryptotext,dictionary)
     roulette = get_individuals_roulette(ordered_individuals)
-
-
+    rand_ind1 = spin_roulette(individuals,roulette)
+    rand_ind2 = spin_roulette(individuals,roulette)
+    childs = cross_over(rand_ind1,rand_ind2)
+    child1 = childs[0]
+    child2 = childs[1]
+    x = 2
 
 solve()
 #print (encryption())
