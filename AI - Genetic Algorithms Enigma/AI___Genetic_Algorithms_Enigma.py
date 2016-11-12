@@ -132,7 +132,7 @@ def scor_turnir(individual):
     random_bonus_weight = 0.3
     random_bonus = random.random()
     scor = individual[0][1] * fitness_weight + random_bonus * random_bonus_weight
-    return 5
+    return scor
 
 def winner(individual_1, individual_2):
     if scor_turnir(individual_1) > scor_turnir(individual_2):
