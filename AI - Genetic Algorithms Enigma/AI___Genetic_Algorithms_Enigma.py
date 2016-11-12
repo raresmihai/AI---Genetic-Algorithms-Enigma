@@ -70,12 +70,13 @@ def print_fitness_individuals():
 def order_by_fitness(individuals,cryptotext,dictionary):
     ordered_individuals = sorted(individuals,key = lambda x: fitness(x,cryptotext,dictionary))
     ordered_individuals = ordered_individuals[::-1]
-    maximum_fitness = max(fitness(ordered_individuals[0],cryptotext,dictionary),1)
+    fitness_sum = sum(fitness(x,cryptotext,dictionary) for x in ordered_individuals)
     individuals_with_fitness = []
-    for individual in individuals:
-        fi = fitness(individual,cryptotext,dictionary)/maximum_fitness
+    for individual in ordered_individuals:
+        fi = fitness(individual,cryptotext,dictionary)/fitness_sum
         individuals_with_fitness.append((individual,fi))
     return individuals_with_fitness
+
 
 
 def solve():
@@ -84,5 +85,5 @@ def solve():
     individuals = generate_individuals()
     ordered_individuals = order_by_fitness(individuals,cryptotext,dictionary)
 
-#solve()
-print (encryption())
+solve()
+#print (encryption())
