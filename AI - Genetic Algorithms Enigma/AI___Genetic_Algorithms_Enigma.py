@@ -71,10 +71,10 @@ def order_by_fitness(individuals,cryptotext,dictionary):
     ordered_individuals = sorted(individuals,key = lambda x: fitness(x,cryptotext,dictionary))
     ordered_individuals = ordered_individuals[::-1]
     maximum_fitness = max(fitness(ordered_individuals[0],cryptotext,dictionary),1)
-    individuals_with_fitness = dict()
+    individuals_with_fitness = []
     for individual in individuals:
         fi = fitness(individual,cryptotext,dictionary)/maximum_fitness
-        individuals_with_fitness[individual] = fi
+        individuals_with_fitness.append((individual,fi))
     return individuals_with_fitness
 
 
