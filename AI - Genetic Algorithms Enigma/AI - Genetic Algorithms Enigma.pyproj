@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="dictionary_input.txt" />
+    <Content Include="initial.txt" />
     <Content Include="solution.txt" />
     <Content Include="text_to_be_encrypted.txt" />
   </ItemGroup>

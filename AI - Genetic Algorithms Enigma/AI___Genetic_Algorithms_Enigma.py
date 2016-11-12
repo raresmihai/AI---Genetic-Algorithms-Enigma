@@ -3,22 +3,27 @@ import string
 import re
 
 def output(initial_text, encrypted_text, encryption_rule):
-    print("Text before encryption is {0}".format(initial_text))
-    print("Text after encryption is {0}".format(encrypted_text))
-    print("The encryption rule applied is {0}".format(encryption_rule))
-
+    with open("solution.txt","w") as fd:
+        fd.write("Text before encryption is \n{0}\n\n".format(initial_text))
+        fd.write("Text after encryption is \n{0}\n\n".format(encrypted_text))
+        fd.write("The encryption rule applied is \n{0}\n\n".format(encryption_rule))
+    
 
 def encryption():
     encryption_rule = list(string.ascii_uppercase)
     random.shuffle(encryption_rule)
     encryption_key = encryption_rule
     with open("text_to_be_encrypted.txt") as fd:
-        initial_text = list(fd.read().upper())
+        initial_text_copy = fd.read().upper()
+        initial_text = list(initial_text_copy)
+        
     for i in range(len(initial_text)):
         letter = initial_text[i]
         if letter.isalpha():
             index = ord(letter) - ord('A')
             initial_text[i] = encryption_rule[index]
+    encryption = "".join(initial_text)
+    output(initial_text_copy,encryption,encryption_rule)
     return "".join(initial_text)
 
 def build_dictionary():
@@ -77,8 +82,9 @@ def order_by_fitness(individuals,cryptotext,dictionary):
     fitness_sum = sum(fitness(x,cryptotext,dictionary) for x in ordered_individuals)
     individuals_with_fitness = []
     for individual in ordered_individuals:
-        fi = fitness(individual,cryptotext,dictionary)/fitness_sum
-        individuals_with_fitness.append((individual,fi))
+        original_fitness = fitness(individual,cryptotext,dictionary)
+        normalized_fitness = original_fitness/fitness_sum
+        individuals_with_fitness.append((individual,normalized_fitness,original_fitness))
     return individuals_with_fitness
 
 def get_individuals_roulette(individuals):
@@ -145,7 +151,7 @@ def mutation(individual):
     return individual_copy
 
 def get_elite(ordered_individuals):
-    return [individual[0] for individual in ordered_individuals[0:6]]
+    return [individual[0] for individual in ordered_individuals[0:3]]
 
 def solve():
     cryptotext = encryption()
@@ -197,7 +203,7 @@ def turnir(individuals):
 def get_winners_from_turnir(individuals):
     individuals_copy = list(individuals)
     turnir_winners = []
-    for i in range(0, 30):
+    for i in range(0, 33):
         turnir_winner = turnir(individuals_copy)
         turnir_winners.append(turnir_winner[0][0])
     return turnir_winners
@@ -224,7 +230,7 @@ def find_cypher():
     dictionary = build_dictionary()
     individuals = generate_individuals()
     individuals = order_by_fitness(individuals,cryptotext,dictionary)
-    number_of_epochs = 1
+    number_of_epochs = 20
     last_best_individual = individuals[0][0]
     unchanged = 0
     childs = []
@@ -242,15 +248,26 @@ def find_cypher():
         else:
             last_best_individual = childs[0]
             unchanged = 0
-
+        print ("",last_best_individual)
+        print (individuals[0])
+        print (individuals[1])
+        print (individuals[2])
+        print (individuals[3])
+        print (individuals[4])
+        print (individuals[5])
+        print (individuals[6])
+        print (individuals[7])
+        print ("unchanged=",unchanged)
+        print ("------------------------------------------")
         if unchanged == number_of_epochs:
             break
 
     decryption_key = individuals[0][0]
 
     decryption = decrypt(cryptotext,decryption_key)
-    with open("solution.txt","w") as fd:
+    with open("solution.txt","a") as fd:
         fd.write(str(decryption_key))
+        fd.write("\n")
         fd.write(decryption)
 
 def get_winners_from_roulette(individuals):
@@ -264,7 +281,7 @@ def get_winners_from_roulette(individuals):
 
 def get_childs_from_cross_over(individuals):
     childs = []
-    for count in range(32):
+    while len(childs) < 64:
         random_index_1 = random.randint(0,len(individuals)-1)
         random_index_2 = random.randint(0,len(individuals)-1)
         while random_index_1 == random_index_2:
@@ -273,8 +290,12 @@ def get_childs_from_cross_over(individuals):
         individual1 = individuals[random_index_1]
         individual2 = individuals[random_index_2]
         cross_over_childs = cross_over(individual1,individual2)
-        childs.extend(cross_over_childs)
+        if cross_over_childs[0] not in childs:
+            childs.append(cross_over_childs[0])
+        if cross_over_childs[1] not in childs:
+            childs.append(cross_over_childs[1])
     return childs
+
 
 find_cypher()
 #print (encryption())
