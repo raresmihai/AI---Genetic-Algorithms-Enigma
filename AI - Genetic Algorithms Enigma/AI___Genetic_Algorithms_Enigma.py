@@ -232,20 +232,19 @@ def find_cypher():
         roulette_winners = get_winners_from_roulette(individuals)
         childs.extend(get_childs_from_mutations(turnir_winners))
         childs.extend(get_childs_from_cross_over(roulette_winners))
-        if last_best_individual_still_first(last_best_individual,childs):
+        individuals = order_by_fitness(childs,cryptotext,dictionary)
+        if last_best_individual_still_first(last_best_individual,individuals):
             unchanged += 1
         else:
             last_best_individual = childs[0]
             unchanged = 0
-        individuals = order_by_fitness(childs,cryptotext,dictionary)
+
         if unchanged == number_of_epochs:
             break
-        print (individuals[0])
-        print (individuals[1])
-        print (individuals[2])
-        print ("---------------------------------------------------------------------")
-    key = childs[0][0]
 
+    key = childs[0][0]
+    decryption = decrypt(cryptotext,key)
+    print (decryption)
 
 def get_winners_from_roulette(individuals):
     roulette_winners = []
