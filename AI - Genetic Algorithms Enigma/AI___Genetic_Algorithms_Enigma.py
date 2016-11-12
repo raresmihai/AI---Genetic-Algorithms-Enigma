@@ -186,7 +186,28 @@ def turnir(individuals):
     turnir_winner = fight_turnir(top_n_individuals[0:n//2], top_n_individuals[n//2:n])
     return turnir_winner
 
-solve()
+def get_winners_from_turnir(individuals):
+    turnir_winners = []
+    for i in range(0, 30):
+        turnir_winner = turnir(individuals)
+        turnir_winners.append(turnir_winner[0][0])
+    return turnir_winners
+
+def get_childs_from_mutations(individuals):
+    childs = []
+    for individual in individuals:
+        mutationn = mutation(individual)
+        childs.append(mutationn)
+    return childs
+
+cryptotext = encryption()
+dictionary = build_dictionary()
+individuals = generate_individuals()
+individuals = order_by_fitness(individuals, cryptotext, dictionary)
+turnir_winners = get_winners_from_turnir(individuals)
+childs = get_childs_from_mutations(turnir_winners)
+print(turnir_winners[0])
+print(childs[0])
 
 def find_cypher():
     cryptotext = encryption()
@@ -215,5 +236,4 @@ def find_cypher():
 
     key = childs[0][0]
 
-#solve()
-#print (encryption())
+
