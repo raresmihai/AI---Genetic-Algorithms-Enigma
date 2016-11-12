@@ -117,7 +117,7 @@ def solve():
     dictionary = build_dictionary()
     individuals = generate_individuals()
     ordered_individuals = order_by_fitness(individuals, cryptotext, dictionary)
-    turnir_winner = turnir(ordered_individuals, cryptotext, dictionary)
+    turnir_winner = turnir(ordered_individuals)
     print (turnir_winner)
     roulette = get_individuals_roulette(ordered_individuals)
     rand_ind1 = spin_roulette(individuals,roulette)
@@ -127,32 +127,31 @@ def solve():
     child2 = childs[1]
     x = 2
 
-def scor_turnir(individual, criptotext, dictionar):
+def scor_turnir(individual):
     fitness_weight  = 0.7
     random_bonus_weight = 0.3
     random_bonus = random.random()
     scor = individual[0][1] * fitness_weight + random_bonus * random_bonus_weight
     return 5
 
-def winner(individual_1, individual_2, criptotext, dictionar):
-    if scor_turnir(individual_1, criptotext, dictionar) > scor_turnir(individual_2, criptotext, dictionar):
+def winner(individual_1, individual_2):
+    if scor_turnir(individual_1) > scor_turnir(individual_2):
         return individual_1
     else:
         return individual_2
 
-def fight_turnir(individuals_1, individuals_2, criptotext, dictionar):
+def fight_turnir(individuals_1, individuals_2):
     if len(individuals_1) <= 1 and len(individuals_2) <= 1:
-        return winner(individuals_1, individuals_2, criptotext, dictionar)
+        return winner(individuals_1, individuals_2)
     else:
-        return fight_turnir(fight_turnir(individuals_1[0:len(individuals_1)//2], individuals_1[len(individuals_1)//2:], criptotext, dictionar),
-                            fight_turnir(individuals_2[0:len(individuals_2)//2], individuals_2[len(individuals_2)//2:], criptotext, dictionar),
-                            criptotext, dictionar)
+        return fight_turnir(fight_turnir(individuals_1[0:len(individuals_1)//2], individuals_1[len(individuals_1)//2:],),
+                            fight_turnir(individuals_2[0:len(individuals_2)//2], individuals_2[len(individuals_2)//2:],))
 
-def turnir(individuals, criptotext, dictionar):
+def turnir(individuals):
     random.shuffle(individuals)
     n = random.choice([2, 4, 8, 16, 32, 64])
     top_n_individuals = individuals[0:n]
-    turnir_winner = fight_turnir(top_n_individuals[0:n//2], top_n_individuals[n//2:n], criptotext, dictionar)
+    turnir_winner = fight_turnir(top_n_individuals[0:n//2], top_n_individuals[n//2:n])
     return turnir_winner
 
 solve()
