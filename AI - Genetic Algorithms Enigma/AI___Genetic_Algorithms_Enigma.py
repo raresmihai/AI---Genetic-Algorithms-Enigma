@@ -81,7 +81,7 @@ def print_fitness_individuals():
 def order_by_fitness(individuals,cryptotext,dictionary):
     ordered_individuals = sorted(individuals,key = lambda x: fitness(x,cryptotext,dictionary))
     ordered_individuals = ordered_individuals[::-1]
-    fitness_sum = sum(fitness(x,cryptotext,dictionary) for x in ordered_individuals)
+    fitness_sum = max(sum(fitness(x,cryptotext,dictionary) for x in ordered_individuals),1)
     individuals_with_fitness = []
     for individual in ordered_individuals:
         original_fitness = fitness(individual,cryptotext,dictionary)
@@ -221,7 +221,7 @@ def last_best_individual_still_first(last_best_individual,individuals):
     i = 0
     if last_best_individual == individuals[0][0]:
         return True
-    while individuals[i][1] == individuals[i+1][1]:
+    while i < len(individuals)-1 and individuals[i][1] == individuals[i+1][1]:
        i += 1
        if last_best_individual == individuals[i][0]:
            return True
