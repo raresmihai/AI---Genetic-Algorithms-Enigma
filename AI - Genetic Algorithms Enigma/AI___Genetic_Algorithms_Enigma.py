@@ -205,13 +205,22 @@ def get_childs_from_mutations(individuals):
         childs.append(mutationn)
     return childs
 
+def last_best_individual_still_first(last_best_individual,individuals):
+    i = 0
+    if last_best_individual == individuals[0][0]:
+        return True
+    while individuals[i][1] == individuals[i+1][1]:
+       i += 1
+       if last_best_individual == individuals[i][0]:
+           return True
+    return False
 
 def find_cypher():
     cryptotext = encryption()
     dictionary = build_dictionary()
     individuals = generate_individuals()
     individuals = order_by_fitness(individuals,cryptotext,dictionary)
-    number_of_epochs = 10
+    number_of_epochs = 3
     last_best_individual = individuals[0][0]
     unchanged = 0
     childs = []
@@ -223,7 +232,7 @@ def find_cypher():
         roulette_winners = get_winners_from_roulette(individuals)
         childs.extend(get_childs_from_mutations(turnir_winners))
         childs.extend(get_childs_from_cross_over(roulette_winners))
-        if childs[0] == last_best_individual:
+        if last_best_individual_still_first(last_best_individual,childs):
             unchanged += 1
         else:
             last_best_individual = childs[0]
@@ -231,7 +240,10 @@ def find_cypher():
         individuals = order_by_fitness(childs,cryptotext,dictionary)
         if unchanged == number_of_epochs:
             break
-        
+        print (individuals[0])
+        print (individuals[1])
+        print (individuals[2])
+        print ("---------------------------------------------------------------------")
     key = childs[0][0]
 
 
