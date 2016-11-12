@@ -11,13 +11,13 @@ def encryption():
     encryption_rule = list(string.ascii_uppercase)
     random.shuffle(encryption_rule)
     with open("text_to_be_encrypted.txt") as fd:
-        initial_text = re.findall("\w+", fd.read().upper())
-    encrypted_text = ""
-    for word in initial_text:
-        for i in range(0,len(word)):
-            encrypted_text += encryption_rule[ord(word[i])-65]
-    output(initial_text, encrypted_text, encryption_rule)
-    return encrypted_text
+        initial_text = list(fd.read().upper())
+    for i in range(len(initial_text)):
+        letter = initial_text[i]
+        if letter.isalpha():
+            index = ord(letter) - ord('A')
+            initial_text[i] = encryption_rule[index]
+    return "".join(initial_text)
 
 def build_dictionary():
     with open("dictionary_input.txt","r",encoding='utf-8') as fd:
@@ -84,4 +84,5 @@ def solve():
     individuals = generate_individuals()
     ordered_individuals = order_by_fitness(individuals,cryptotext,dictionary)
 
-solve()
+#solve()
+print (encryption())
