@@ -97,12 +97,39 @@ def spin_roulette(individuals,roulette):
 def cross_over(individual1,individual2):
     split_index = random.randint(1,24)
     child1 = individual1[0:split_index]
-    child1.extend(individual2[split_index:25])
+    child1.extend(individual2[split_index:26])
     child2 = individual2[0:split_index]
-    child2.extend(individual1[split_index:25])
-    #childs = solve_conflicts(child1,child2)
-    return (child1,child2)
+    child2.extend(individual1[split_index:26])
+    childs = solve_conflicts(child1,child2)
+    return childs
 
+def solve_conflicts(child1,child2):
+    #child1 = ["5","4","8","5","8","9","2","1","6"]
+    #child2 = ["7","3","4","9","7","1","2","3","6"]
+    child1_index_duplicates = []
+    child1_letter_duplicates = []
+    child2_index_duplicates = []
+    child2_letter_duplicates = []
+    for i in range(len(child1)):
+        letter = child1[i]
+        if child1.count(letter) > 1 and letter not in child1_letter_duplicates:
+            child1_index_duplicates.append(i)
+            child1_letter_duplicates.append(letter)
+    for i in range(len(child2)):
+        letter = child2[i]
+        if child2.count(letter) > 1 and letter not in child2_letter_duplicates:
+            child2_index_duplicates.append(i)
+            child2_letter_duplicates.append(letter)
+
+    for i in range(len(child1_index_duplicates)):
+        child1_duplicate_index = child1_index_duplicates[i]
+        child1_duplicate_letter = child1_letter_duplicates[i]
+        child2_duplicate_index = child2_index_duplicates[i]
+        child2_duplicate_letter = child2_letter_duplicates[i]
+        child1[child1_duplicate_index] = child2_duplicate_letter
+        child2[child2_duplicate_index] = child1_duplicate_letter
+    return (child1,child2)
+    
 def mutation(individual):
     index1 = random.randint(0,25)
     index2 = random.randint(0,25)
@@ -111,6 +138,9 @@ def mutation(individual):
     individual[index1] = letter2
     individual[index2] = letter1
     return individual
+
+def get_elite(ordered_individuals):
+    return ordered_individuals[0:6]
 
 def solve():
     cryptotext = encryption()
@@ -123,7 +153,36 @@ def solve():
     childs = cross_over(rand_ind1,rand_ind2)
     child1 = childs[0]
     child2 = childs[1]
+    mutation1 = mutation(rand_ind1)
+    mutation2 = mutation(rand_ind2)
     x = 2
 
-solve()
+def find_cypher():
+    cryptotext = encryption()
+    dictionary = build_dictionary()
+    individuals = generate_individuals()
+    individuals = order_by_fitness(individuals,cryptotext,dictionary)
+    number_of_epochs = 10
+    last_best_individual = individuals[0][0]
+    unchanged = 0
+    childs = []
+
+    while True:
+        childs = []
+        childs.extend(get_elite(individuals))
+        turnir_winners = get_winners_from_turnir(individuals)
+        roulette_winners = get_winners_from_roulette(individuals)
+        childs.extend(get_childs_from_mutations(turnir_winners))
+        childs.extend(get_childs_from_cross_over(roulette_winners))
+        if childs[0][0] == last_best_individual:
+            unchanged += 1
+        else:
+            last_best_individual = childs[0][0]
+            unchanged = 0
+        if unchanged == number_of_epochs:
+            break
+
+    key = childs[0][0]
+
+#solve()
 #print (encryption())
