@@ -20,7 +20,7 @@ def encryption():
     return encrypted_text
 
 def build_dictionary():
-    with open("dictionary_input.txt") as fd:
+    with open("dictionary_input.txt","r",encoding='utf-8') as fd:
         input_dictionary = set(re.findall("\w+", fd.read().upper()))
     return input_dictionary
 
@@ -59,15 +59,6 @@ def fitness(individual, cryptotext, dictionary):
             fitness += 1
     return fitness
 
-def fitness_comparator(individual1,individual2,cryptotext,dictionary):
-    if fitness(individual,cryptotext,dictionary) < fitness(individual2,cryptotext,dictionary):
-        return -1
-    return 0
-
-def order_by_fitness(individuals,cryptotext,dictionary):
-    ordered_individuals = sorted(individuals,key = lambda x: fitness(x,cryptotext,dictionary))
-    return ordered_individuals[::-1]
-
 def print_fitness_individuals():
     dict = ["ANA","ARE","MERE","PE","A","D","PA","NU","DA"]
     cryptotext = "MDM MRQ AQRQ Y B D C SU GF XC"
@@ -76,3 +67,21 @@ def print_fitness_individuals():
         print(fitness(indiv,cryptotext,dict),end=" ")
 
 
+def order_by_fitness(individuals,cryptotext,dictionary):
+    ordered_individuals = sorted(individuals,key = lambda x: fitness(x,cryptotext,dictionary))
+    ordered_individuals = ordered_individuals[::-1]
+    maximum_fitness = max(fitness(ordered_individuals[0],cryptotext,dictionary),1)
+    individuals_with_fitness = dict()
+    for individual in individuals:
+        fi = fitness(individual,cryptotext,dictionary)/maximum_fitness
+        individuals_with_fitness[individual] = fi
+    return individuals_with_fitness
+
+
+def solve():
+    cryptotext = encryption()
+    dictionary = build_dictionary()
+    individuals = generate_individuals()
+    ordered_individuals = order_by_fitness(individuals,cryptotext,dictionary)
+
+solve()
