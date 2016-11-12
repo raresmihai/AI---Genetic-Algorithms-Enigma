@@ -63,8 +63,10 @@ def fitness(individual, cryptotext, dictionary):
     decryption = decrypt(cryptotext,individual)
     decrypted_words = re.findall("\w+", decryption)
     fitness = 0
+    found_words = []
     for word in decrypted_words:
-        if word in dictionary:
+        if word in dictionary and word not in found_words:
+            found_words.append(word)
             fitness += 1
     return fitness
 
@@ -248,6 +250,8 @@ def find_cypher():
         else:
             last_best_individual = childs[0]
             unchanged = 0
+        if individuals[0][2] > 5:
+            break
         print ("",last_best_individual)
         print (individuals[0])
         print (individuals[1])
