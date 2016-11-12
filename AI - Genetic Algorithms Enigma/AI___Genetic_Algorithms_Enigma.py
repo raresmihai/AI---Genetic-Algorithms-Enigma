@@ -77,13 +77,31 @@ def order_by_fitness(individuals,cryptotext,dictionary):
         individuals_with_fitness.append((individual,fi))
     return individuals_with_fitness
 
+def get_individuals_roulette(individuals):
+    individuals_roulette = []
+    i = 0
+    while len(individuals_roulette) < 100:
+        individual = individuals[i]
+        fitness = individual[1]
+        importance = max(int(fitness * 100),1)
+        current_length = len(individuals_roulette)
+        for count in range(current_length,current_length+importance):
+            individuals_roulette.append(i)
+        i += 1
+    return individuals_roulette
 
+def spin_roulette(individuals,roulette):
+    random_individual_index = random.randint(0,99)
+    return individuals[roulette[random_individual_index]]
 
 def solve():
     cryptotext = encryption()
     dictionary = build_dictionary()
     individuals = generate_individuals()
     ordered_individuals = order_by_fitness(individuals,cryptotext,dictionary)
+    roulette = get_individuals_roulette(ordered_individuals)
+
+
 
 solve()
 #print (encryption())
