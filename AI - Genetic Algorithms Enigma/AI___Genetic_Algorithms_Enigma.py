@@ -7,9 +7,11 @@ def output(initial_text, encrypted_text, encryption_rule):
     print("Text after encryption is {0}".format(encrypted_text))
     print("The encryption rule applied is {0}".format(encryption_rule))
 
+
 def encryption():
     encryption_rule = list(string.ascii_uppercase)
     random.shuffle(encryption_rule)
+    encryption_key = encryption_rule
     with open("text_to_be_encrypted.txt") as fd:
         initial_text = list(fd.read().upper())
     for i in range(len(initial_text)):
@@ -46,6 +48,8 @@ def decrypt(cryptotext,key):
         letter = cryptotext[i]
         if letter.isalpha():
             index = ord(letter) - ord('A')
+            if index > len(key):
+                print (index)
             cryptotext[i] = key[index]
     return "".join(cryptotext)
 
@@ -220,7 +224,7 @@ def find_cypher():
     dictionary = build_dictionary()
     individuals = generate_individuals()
     individuals = order_by_fitness(individuals,cryptotext,dictionary)
-    number_of_epochs = 3
+    number_of_epochs = 1
     last_best_individual = individuals[0][0]
     unchanged = 0
     childs = []
@@ -242,9 +246,12 @@ def find_cypher():
         if unchanged == number_of_epochs:
             break
 
-    key = childs[0][0]
-    decryption = decrypt(cryptotext,key)
-    print (decryption)
+    decryption_key = individuals[0][0]
+
+    decryption = decrypt(cryptotext,decryption_key)
+    with open("solution.txt","w") as fd:
+        fd.write(str(decryption_key))
+        fd.write(decryption)
 
 def get_winners_from_roulette(individuals):
     roulette_winners = []
