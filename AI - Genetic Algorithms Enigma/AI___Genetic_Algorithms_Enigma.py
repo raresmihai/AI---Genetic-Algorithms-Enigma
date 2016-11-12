@@ -141,7 +141,7 @@ def mutation(individual):
     return individual_copy
 
 def get_elite(ordered_individuals):
-    return ordered_individuals[0:6]
+    return [individual[0] for individual in ordered_individuals[0:6]]
 
 def solve():
     cryptotext = encryption()
@@ -204,14 +204,6 @@ def get_childs_from_mutations(individuals):
         childs.append(mutationn)
     return childs
 
-cryptotext = encryption()
-dictionary = build_dictionary()
-individuals = generate_individuals()
-individuals = order_by_fitness(individuals, cryptotext, dictionary)
-turnir_winners = get_winners_from_turnir(individuals)
-childs = get_childs_from_mutations(turnir_winners)
-print(turnir_winners[0])
-print(childs[0])
 
 def find_cypher():
     cryptotext = encryption()
@@ -233,7 +225,7 @@ def find_cypher():
         if childs[0][0] == last_best_individual:
             unchanged += 1
         else:
-            last_best_individual = childs[0][0]
+            last_best_individual = childs[0]
             unchanged = 0
         individuals = order_by_fitness(childs,cryptotext,dictionary)
         if unchanged == number_of_epochs:
@@ -265,6 +257,6 @@ def get_childs_from_cross_over(individuals):
         childs.extend(cross_over_childs)
     return childs
 
-solve()
+find_cypher()
 #print (encryption())
 
