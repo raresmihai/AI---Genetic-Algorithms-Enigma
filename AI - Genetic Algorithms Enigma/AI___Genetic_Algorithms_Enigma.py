@@ -157,6 +157,8 @@ def solve():
     child2 = childs[1]
     mutation1 = mutation(rand_ind1)
     mutation2 = mutation(rand_ind2)
+    roulette_winners = get_winners_from_roulette(ordered_individuals)
+    childs = get_childs_from_cross_over(roulette_winners)
     x = 2
 
 def scor_turnir(individual):
@@ -185,6 +187,7 @@ def turnir(individuals):
     top_n_individuals = individuals[0:n]
     turnir_winner = fight_turnir(top_n_individuals[0:n//2], top_n_individuals[n//2:n])
     return turnir_winner
+
 
 def get_winners_from_turnir(individuals):
     turnir_winners = []
@@ -231,9 +234,36 @@ def find_cypher():
         else:
             last_best_individual = childs[0][0]
             unchanged = 0
+        individuals = order_by_fitness(childs,cryptotext,dictionary)
         if unchanged == number_of_epochs:
             break
-
+        
     key = childs[0][0]
 
+
+def get_winners_from_roulette(individuals):
+    roulette_winners = []
+    roulette = get_individuals_roulette(individuals)
+    for count in range(64):
+        roulette_winner = spin_roulette(individuals,roulette)
+        if roulette_winner[0] not in roulette_winners:
+            roulette_winners.append(roulette_winner[0])
+    return roulette_winners
+
+def get_childs_from_cross_over(individuals):
+    childs = []
+    for count in range(32):
+        random_index_1 = random.randint(0,len(individuals)-1)
+        random_index_2 = random.randint(0,len(individuals)-1)
+        while random_index_1 == random_index_2:
+            random_index_1 = random.randint(0,len(individuals)-1)
+            random_index_2 = random.randint(0,len(individuals)-1)
+        individual1 = individuals[random_index_1]
+        individual2 = individuals[random_index_2]
+        cross_over_childs = cross_over(individual1,individual2)
+        childs.extend(cross_over_childs)
+    return childs
+
+solve()
+#print (encryption())
 
