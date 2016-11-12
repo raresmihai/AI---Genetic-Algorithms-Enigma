@@ -153,7 +153,7 @@ def mutation(individual):
     return individual_copy
 
 def get_elite(ordered_individuals):
-    return [individual[0] for individual in ordered_individuals[0:3]]
+    return [individual[0] for individual in ordered_individuals[0:6]]
 
 def solve():
     cryptotext = encryption()
@@ -205,7 +205,7 @@ def turnir(individuals):
 def get_winners_from_turnir(individuals):
     individuals_copy = list(individuals)
     turnir_winners = []
-    for i in range(0, 33):
+    for i in range(0, 30):
         turnir_winner = turnir(individuals_copy)
         turnir_winners.append(turnir_winner[0][0])
     return turnir_winners
@@ -229,6 +229,7 @@ def last_best_individual_still_first(last_best_individual,individuals):
 
 def find_cypher():
     cryptotext = encryption()
+    number_of_words = len(cryptotext.split(" "))
     dictionary = build_dictionary()
     individuals = generate_individuals()
     individuals = order_by_fitness(individuals,cryptotext,dictionary)
@@ -250,7 +251,7 @@ def find_cypher():
         else:
             last_best_individual = childs[0]
             unchanged = 0
-        if individuals[0][2] > 5:
+        if individuals[0][2] > number_of_words-5:
             break
         print ("",last_best_individual)
         print (individuals[0])
