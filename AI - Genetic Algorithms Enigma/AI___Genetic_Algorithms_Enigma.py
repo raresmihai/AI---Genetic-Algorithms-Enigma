@@ -131,13 +131,14 @@ def solve_conflicts(child1,child2):
     return (child1,child2)
     
 def mutation(individual):
+    individual_copy = list(individual)
     index1 = random.randint(0,25)
     index2 = random.randint(0,25)
-    letter1 = individual[index1]
-    letter2 = individual[index2]
-    individual[index1] = letter2
-    individual[index2] = letter1
-    return individual
+    letter1 = individual_copy[index1]
+    letter2 = individual_copy[index2]
+    individual_copy[index1] = letter2
+    individual_copy[index2] = letter1
+    return individual_copy
 
 def get_elite(ordered_individuals):
     return ordered_individuals[0:6]
