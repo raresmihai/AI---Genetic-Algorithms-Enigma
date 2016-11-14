@@ -233,8 +233,8 @@ def find_cypher():
     dictionary = build_dictionary()
     individuals = generate_individuals()
     individuals = order_by_fitness(individuals,cryptotext,dictionary)
-    number_of_epochs = 20
-    last_best_individual = individuals[0][0]
+    number_of_epochs = 50
+    last_best_individual_fitness = 0
     unchanged = 0
     childs = []
 
@@ -246,14 +246,15 @@ def find_cypher():
         childs.extend(get_childs_from_mutations(turnir_winners))
         childs.extend(get_childs_from_cross_over(roulette_winners))
         individuals = order_by_fitness(childs,cryptotext,dictionary)
-        if last_best_individual_still_first(last_best_individual,individuals):
+        if last_best_individual_fitness == individuals[0][2]:
             unchanged += 1
         else:
-            last_best_individual = childs[0]
+            last_best_individual_fitness = individuals[0][2]
             unchanged = 0
-        if individuals[0][2] > number_of_words-5:
+
+        if unchanged > number_of_epochs and individuals[0][2] > number_of_words-5:
             break
-        print ("",last_best_individual)
+        print ("",last_best_individual_fitness)
         print (individuals[0])
         print (individuals[1])
         print (individuals[2])

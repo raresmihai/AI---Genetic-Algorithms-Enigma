@@ -4,10 +4,14 @@ CIRCUIT, BEGAN TO HEAD ME OFF. I WAS TIRED, AT ANY RATE; BUT
 HAD I BEEN AS FRESH AS WHEN I ROSE, I COULD SEE IT WAS IN 
 
 Text after encryption is 
-DQNUEQUXP ULZ JDRTVZ VZEIIZEVZW, EQW SEKDQR E GDWZ
-ADVATDU, FZREQ UB LZEW SZ BJJ. D GEN UDVZW, EU EQP VEUZ; FTU
-LEW D FZZQ EN JVZNL EN GLZQ D VBNZ, D ABTXW NZZ DU GEN DQ 
+MQIUWQUXO UEV FMTDCV CVWNNVWCVK, WQK LWZMQT W YMKV
+RMCRDMU, JVTWQ US EVWK LV SFF. M YWI UMCVK, WU WQO CWUV; JDU
+EWK M JVVQ WI FCVIE WI YEVQ M CSIV, M RSDXK IVV MU YWI MQ 
 
 The encryption rule applied is 
-['E', 'F', 'A', 'W', 'Z', 'J', 'R', 'L', 'D', 'M', 'K', 'X', 'S', 'Q', 'B', 'I', 'Y', 'V', 'N', 'U', 'T', 'C', 'G', 'O', 'P', 'H']
+['W', 'J', 'R', 'K', 'V', 'F', 'T', 'E', 'M', 'B', 'Z', 'X', 'L', 'Q', 'S', 'N', 'A', 'C', 'I', 'U', 'D', 'H', 'Y', 'G', 'O', 'P']
 
+['J', 'C', 'P', 'U', 'T', 'R', 'X', 'L', 'O', 'S', 'E', 'Q', 'A', 'W', 'V', 'Z', 'M', 'B', 'D', 'G', 'N', 'F', 'I', 'K', 'H', 'Y']
+AMONIMNKV NTF RAGUPF PFIWWFIPFE, IME QIYAMG I HAEF
+BAPBUAN, SFGIM ND TFIE QF DRR. A HIO NAPFE, IN IMV PINF; SUN
+TIE A SFFM IO RPFOT IO HTFM A PDOF, A BDUKE OFF AN HIO AM 
