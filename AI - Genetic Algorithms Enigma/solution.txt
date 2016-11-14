@@ -4,14 +4,15 @@ CIRCUIT, BEGAN TO HEAD ME OFF. I WAS TIRED, AT ANY RATE; BUT
 HAD I BEEN AS FRESH AS WHEN I ROSE, I COULD SEE IT WAS IN 
 
 Text after encryption is 
-MQIUWQUXO UEV FMTDCV CVWNNVWCVK, WQK LWZMQT W YMKV
-RMCRDMU, JVTWQ US EVWK LV SFF. M YWI UMCVK, WU WQO CWUV; JDU
-EWK M JVVQ WI FCVIE WI YEVQ M CSIV, M RSDXK IVV MU YWI MQ 
+WKIODKOBS OTF AWXQVF VFDEEFDVFN, DKN CDGWKX D MWNF
+UWVUQWO, JFXDK OR TFDN CF RAA. W MDI OWVFN, DO DKS VDOF; JQO
+TDN W JFFK DI AVFIT DI MTFK W VRIF, W URQBN IFF WO MDI WK 
 
 The encryption rule applied is 
-['W', 'J', 'R', 'K', 'V', 'F', 'T', 'E', 'M', 'B', 'Z', 'X', 'L', 'Q', 'S', 'N', 'A', 'C', 'I', 'U', 'D', 'H', 'Y', 'G', 'O', 'P']
+['D', 'J', 'U', 'N', 'F', 'A', 'X', 'T', 'W', 'H', 'G', 'B', 'C', 'K', 'R', 'E', 'L', 'V', 'I', 'O', 'Q', 'P', 'M', 'Y', 'S', 'Z']
 
-['J', 'C', 'P', 'U', 'T', 'R', 'X', 'L', 'O', 'S', 'E', 'Q', 'A', 'W', 'V', 'Z', 'M', 'B', 'D', 'G', 'N', 'F', 'I', 'K', 'H', 'Y']
-AMONIMNKV NTF RAGUPF PFIWWFIPFE, IME QIYAMG I HAEF
-BAPBUAN, SFGIM ND TFIE QF DRR. A HIO NAPFE, IN IMV PINF; SUN
-TIE A SFFM IO RPFOT IO HTFM A PDOF, A BDUKE OFF AN HIO AM 
+['D', 'B', 'X', 'V', 'F', 'A', 'G', 'C', 'W', 'L', 'P', 'T', 'J', 'I', 'R', 'N', 'S', 'M', 'O', 'K', 'E', 'Z', 'U', 'Y', 'H', 'Q']
+
+ITNSATSBQ SLE FICZDE DEAUUEADEP, ATP HAGITC A RIPE
+WIDWZIS, MECAT SO LEAP HE OFF. I RAN SIDEP, AS ATQ DASE; MZS
+LAP I MEET AN FDENL AN RLET I DONE, I WOZBP NEE IS RAN IT 

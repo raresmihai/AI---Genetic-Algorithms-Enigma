@@ -1,13 +1,3 @@
-Text before encryption is 
-WAS STANDING AT THE DOOR FOR A MOMENT, FULL OF SAD
-THOUGHTS ABOUT MY FATHER, WHEN I SAW SOMEONE DRAWING
-SLOWLY NEAR ALONG THE ROAD.
-
-Text after encryption is 
-MUT TCUJPSJL UC CVH PGGI NGI U YGYHJC, NEZZ GN TUP
-CVGELVCT UAGEC YW NUCVHI, MVHJ S TUM TGYHGJH PIUMSJL
-TZGMZW JHUI UZGJL CVH IGUP.
-
-The encryption rule applied is 
-['U', 'A', 'F', 'P', 'H', 'N', 'L', 'V', 'S', 'D', 'O', 'Z', 'Y', 'J', 'G', 'B', 'X', 'I', 'T', 'C', 'E', 'Q', 'M', 'K', 'W', 'R']
-
+Instantly the figure reappeared, and making a wide
+circuit, began to head me off. I was tired, at any rate; but
+had I been as fresh as when I rose, I could see it was in 

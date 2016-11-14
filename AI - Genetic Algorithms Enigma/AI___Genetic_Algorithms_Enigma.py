@@ -2,10 +2,16 @@ import random
 import string
 import re
 
+def output_encryption_rule(fd,encryption_rule):
+    for i in range(len(encryption_rule)):
+        fd.write("{0}->{1} ".format(chr(i+65),encryption_rule[i]))
+    fd.write("\n\n")
+
 def output(initial_text, encrypted_text, encryption_rule):
     with open("solution.txt","w") as fd:
         fd.write("Text before encryption is \n{0}\n\n".format(initial_text))
         fd.write("Text after encryption is \n{0}\n\n".format(encrypted_text))
+        #output_encryption_rule(fd,encryption_rule)
         fd.write("The encryption rule applied is \n{0}\n\n".format(encryption_rule))
     
 
@@ -41,6 +47,7 @@ def generate_individuals():
         if indiv not in individuals:
             individuals.append(indiv)
             individuals_count += 1
+    #output_generare_indivizi(individuals)
     return individuals
 
 def print_individual():
@@ -87,23 +94,49 @@ def order_by_fitness(individuals,cryptotext,dictionary):
         original_fitness = fitness(individual,cryptotext,dictionary)
         normalized_fitness = original_fitness/fitness_sum
         individuals_with_fitness.append((individual,normalized_fitness,original_fitness))
+    #output_evaluare_fitness_si_ordonare(individuals_with_fitness)
     return individuals_with_fitness
 
+def onlyOneFitness(individuals):
+    if individuals[0][1] == 0:
+        return False
+    i = 0
+    while i < 98 and individuals[i][1] == individuals[i+1][1]:
+        i += 1
+    if individuals[i+1][1] == 0 and i < 4:
+        return True
+    return False
+
+
+    
 def get_individuals_roulette(individuals):
     individuals_roulette = []
-    i = 0
-    while len(individuals_roulette) < 100:
-        individual = individuals[i]
-        fitness = individual[1]
-        importance = max(int(fitness * 100),1)
-        current_length = len(individuals_roulette)
-        for count in range(current_length,current_length+importance):
+    i = -1
+    if onlyOneFitness(individuals):
+        for count in range (30):
             individuals_roulette.append(i)
-        i += 1
+            if count % 10 == 0:
+                i += 1
+        for count in range(70):
+            individuals_roulette.append(i)
+            i += 1
+    else:
+        i = 0
+        while len(individuals_roulette) < 100:
+            individual = individuals[i]
+            fitness = individual[1]
+            importance = max(int(fitness * 100),1)
+            current_length = len(individuals_roulette)
+            for count in range(current_length,current_length+importance):
+                individuals_roulette.append(i)
+            i += 1
+    #if individuals[0][2] != 0:
+        #output_ruleta(individuals,individuals_roulette)
     return individuals_roulette
 
 def spin_roulette(individuals,roulette):
     random_individual_index = random.randint(0,99)
+    #output_castigatorul_ruletei(individuals, random_individual_index)
     return individuals[roulette[random_individual_index]]
 
 def cross_over(individual1,individual2):
@@ -113,6 +146,7 @@ def cross_over(individual1,individual2):
     child2 = individual2[0:split_index]
     child2.extend(individual1[split_index:26])
     childs = solve_conflicts(child1,child2)
+    #output_cross_over(individual1,individual2,child1,child2,split_index)
     return childs
 
 def solve_conflicts(child1,child2):
@@ -182,6 +216,7 @@ def scor_turnir(individual):
     return scor
 
 def winner(individual_1, individual_2):
+    #output_winner_turnir(individual_1, individual_2, scor_turnir(individual_1), scor_turnir(individual_2))
     if scor_turnir(individual_1) > scor_turnir(individual_2):
         return individual_1
     else:
@@ -227,16 +262,23 @@ def last_best_individual_still_first(last_best_individual,individuals):
            return True
     return False
 
+def count_number_of_unique_words(cryptotext):
+    words = re.findall("\w+", cryptotext)
+    sol = len(set(words))
+    return sol
+
 def find_cypher():
     cryptotext = encryption()
-    number_of_words = len(cryptotext.split(" "))
+    number_of_words = count_number_of_unique_words(cryptotext)
+    print(number_of_words)
     dictionary = build_dictionary()
     individuals = generate_individuals()
     individuals = order_by_fitness(individuals,cryptotext,dictionary)
-    number_of_epochs = 50
+    number_of_epochs = 100
     last_best_individual_fitness = 0
     unchanged = 0
     childs = []
+    restart = 20
 
     while True:
         childs = []
@@ -252,8 +294,13 @@ def find_cypher():
             last_best_individual_fitness = individuals[0][2]
             unchanged = 0
 
-        if unchanged > number_of_epochs and individuals[0][2] > number_of_words-5:
+        if unchanged > number_of_epochs or individuals[0][2] == number_of_words:
             break
+
+        if unchanged > restart and individuals[0][2] < number_of_words/5:
+                individuals = generate_individuals()
+                individuals = order_by_fitness(individuals,cryptotext,dictionary) 
+
         print ("",last_best_individual_fitness)
         print (individuals[0])
         print (individuals[1])
@@ -272,7 +319,9 @@ def find_cypher():
 
     decryption = decrypt(cryptotext,decryption_key)
     with open("solution.txt","a") as fd:
-        fd.write(str(decryption_key))
+        fd.write(str(build_encryption_key_from_decryption_key(decryption_key)))
+        fd.write("\n")
+        #fd.write(str(decryption_key))
         fd.write("\n")
         fd.write(decryption)
 
@@ -283,6 +332,10 @@ def get_winners_from_roulette(individuals):
         roulette_winner = spin_roulette(individuals,roulette)
         if roulette_winner[0] not in roulette_winners:
             roulette_winners.append(roulette_winner[0])
+    while len(roulette_winners) < 20:
+        random_ind_index = random.randint(0,99)
+        if individuals[random_ind_index][0] not in roulette_winners:
+            roulette_winners.append(individuals[random_ind_index][0])
     return roulette_winners
 
 def get_childs_from_cross_over(individuals):
@@ -290,9 +343,11 @@ def get_childs_from_cross_over(individuals):
     while len(childs) < 64:
         random_index_1 = random.randint(0,len(individuals)-1)
         random_index_2 = random.randint(0,len(individuals)-1)
+        
         while random_index_1 == random_index_2:
             random_index_1 = random.randint(0,len(individuals)-1)
             random_index_2 = random.randint(0,len(individuals)-1)
+        
         individual1 = individuals[random_index_1]
         individual2 = individuals[random_index_2]
         cross_over_childs = cross_over(individual1,individual2)
@@ -303,6 +358,78 @@ def get_childs_from_cross_over(individuals):
     return childs
 
 
-find_cypher()
+def build_encryption_key_from_decryption_key(decryption_key):
+    encryption_key = []
+    for i in range(26):
+        encryption_key.append('A')
+    for i in range(26):
+        encryption_key[ord(decryption_key[i])-65] = chr(i+65)
+    return encryption_key
+
 #print (encryption())
 
+def output_decrypt(initial_text, encrypted_text, encryption_rule):
+   with open("output.txt", "a") as fd:
+       fd.write("Text before encryption is \n{0}\n\n".format(initial_text))
+       fd.write("Text after encryption is \n{0}\n\n".format(encrypted_text))
+       fd.write("The encryption rule applied is \n{0}\n\n".format(encryption_rule))
+
+
+def output_generare_indivizi(individuals):
+   with open("output.txt", "a") as fd:
+       fd.write("\n------Generarea indivizilor:--------\n")
+       for individual in individuals:
+           fd.write(str(individual))
+
+
+def output_evaluare_fitness_si_ordonare(ordered_individuals):
+   with open("output.txt","a") as fd:
+       fd.write("\n-------Afisarea indivizilor sortati dupa valorile de fitness:-----------\n")
+       for individual in ordered_individuals:
+           fd.write("{0},{1}\n".format(individual[0], individual[1]))
+
+
+def output_ruleta(ordered_individuals, individuals_from_roulette):
+   with open("output.txt", "a") as fd:
+       fd.write("\n-------Fitness-ul primului individ------\n")
+       fd.write(str(ordered_individuals[0][1]))
+       fd.write("\n--------Indivizii din ruleta:---------\n")
+       for individ in individuals_from_roulette:
+           fd.write(str(individ))
+
+def output_castigatorul_ruletei(individuals, random_individual_index):
+   with open("output.txt", "a") as fd:
+       fd.write("\n------Castigatorul ruletei este\n{0}\n-----\n".format(individuals[random_individual_index]))
+
+
+def output_cross_over(individual1, individual2, child1, child2, split_index):
+   with open("output.txt", "a") as fd:
+       fd.write("\n-----------Cross over----------\n")
+       fd.write("Facem split la indexul {0} intre indivizii\n{1}\n si\n{2}\n\n".format(split_index, individual1, individual2))
+       fd.write("In urma cross-over-ului au rezultat copiii \n{0}\n si \n{1}\n\n\n".format(child1, child2))
+
+
+
+
+def output_mutation(individual_rezultat, individual, index1, index2):
+   with open("output.txt", "a") as fd:
+       fd.write("\n---------Procesul de mutatie---------\n")
+       fd.write("\n-------Vom aplica mutatia individului \n{0}\n la pozitiile {1} si {2}".format(individual, index1, index2))
+       fd.write("\n-------Mutatia rezultata este: \n{0}".format(individual_rezultat))
+
+
+def output_elite(ordered_individuals):
+   with open("output.txt", "a") as fd:
+       fd.write("\n-----------Elitismul-------------------\n")
+       for i in range(0, 6):
+           fd.write(str(ordered_individuals[i])+"\n")
+
+def output_winner_turnir(individual_1, individual_2, scor_1, scor_2):
+   with open("output.txt", "a") as fd:
+       fd.write("\n-----Lupta turnir intre individul \n{0}\n, avand scorul = {1}, cu individul\n{2}\n, avand scorul = {3}---\n".format(individual_1[0][0], scor_1,individual_2[0][0], scor_2))
+       if scor_1 > scor_2:
+           fd.write("A castigat individul 1")
+       else:
+           fd.write("A castigat individul 2")
+
+find_cypher()
